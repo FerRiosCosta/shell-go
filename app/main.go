@@ -71,9 +71,9 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
+			} else {
+				fmt.Printf("%s: command not found\n", command)
 			}
-
-			fmt.Printf("%s: command not found\n", command)
 		}
 	}
 }
