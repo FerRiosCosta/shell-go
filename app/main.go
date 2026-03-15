@@ -66,8 +66,7 @@ func main() {
 		default:
 			executable, is_exec := is_executable(parts[0])
 			if is_exec {
-				args := os.Args[1:]
-				cmd := exec.Command(executable, args[1:]...)
+				cmd := exec.Command(executable, parts[1:]...)
 				err := cmd.Run()
 				if err != nil {
 					log.Fatal(err)
