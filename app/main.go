@@ -23,7 +23,7 @@ func main() {
 		if command == "exit" {
 			break
 		}
-		fmt.Println(command[:len(command)] + ": command not found")
+		fmt.Println(command + ": command not found")
 
 	}
 
