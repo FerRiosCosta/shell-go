@@ -32,7 +32,7 @@ func main() {
 			} else if command[5:5+len("type")] == "type" {
 				fmt.Println("type is a shell builtin")
 			} else {
-				fmt.Println(command[5:] + " command not found")
+				fmt.Println(command[5:] + " not found")
 			}
 		} else {
 			fmt.Println(command + ": command not found")
