@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -67,10 +66,12 @@ func main() {
 			executable, is_exec := is_executable(parts[0])
 			if is_exec {
 				cmd := exec.Command(executable, parts[1:]...)
-				err := cmd.Run()
-				if err != nil {
-					log.Fatal(err)
-				}
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				cmd.Run()
+				//if err != nil {
+				//	log.Fatal(err)
+				//}
 			} else {
 				fmt.Printf("%s: command not found\n", command)
 			}
