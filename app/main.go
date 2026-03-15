@@ -63,9 +63,9 @@ func main() {
 				fmt.Print(check_type(parts[1]))
 			}
 		default:
-			executable, is_exec := is_executable(parts[0])
+			_, is_exec := is_executable(parts[0])
 			if is_exec {
-				cmd := exec.Command(executable, parts[1:]...)
+				cmd := exec.Command(parts[0], parts[1:]...)
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 				cmd.Run()
