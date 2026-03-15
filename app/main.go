@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -36,10 +37,17 @@ func main() {
 			}
 			fmt.Println(strings.TrimSpace(builder.String()))
 		case "type":
-			if len(parts) == 2 && (parts[1] == "echo" || parts[1] == "type" || parts[1] == "exit") {
-				fmt.Printf("%s is a shell builtin\n", parts[1])
-			} else {
-				fmt.Printf("%s: not found\n", parts[1])
+			if len(parts) == 2 {
+				if parts[1] == "echo" || parts[1] == "type" || parts[1] == "exit" {
+					fmt.Printf("%s is a shell builtin\n", parts[1])
+				} else {
+					word, err := exec.LookPath(parts[1])
+					if err != nil {
+						fmt.Printf("%s: not found\n", parts[1])
+					} else {
+						fmt.Printf("%s is %s\n", parts[1], word)
+					}
+				}
 			}
 		default:
 			fmt.Printf("%s: command not found\n", command)
