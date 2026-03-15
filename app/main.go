@@ -69,9 +69,6 @@ func main() {
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 				cmd.Run()
-				//if err != nil {
-				//	log.Fatal(err)
-				//}
 			} else {
 				fmt.Printf("%s: command not found\n", command)
 			}
