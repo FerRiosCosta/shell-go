@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -63,7 +64,7 @@ func main() {
 				fmt.Print(check_type(parts[1]))
 			}
 		case "pwd":
-			dir, err : os.Getwd()
+			dir, err := os.Getwd()
 			if err != nil {
 				log.Fatal(err)
 			}
