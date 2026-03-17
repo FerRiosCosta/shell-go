@@ -87,7 +87,7 @@ func main() {
 						log.Fatal(err)
 					}
 				} else {
-					fmt.Printf("cd: %s: Not such file or directory\n", parts[1])
+					fmt.Printf("cd: %s: No such file or directory\n", parts[1])
 				}
 			}
 
