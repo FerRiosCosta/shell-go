@@ -95,6 +95,12 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
+				} else if parts[1] == "~" {
+					home := os.Getenv("HOME")
+					err := os.Chdir(home)
+					if err != nil {
+						log.Fatal(err)
+					}
 				} else {
 					fmt.Printf("cd: %s: No such file or directory\n", parts[1])
 				}
