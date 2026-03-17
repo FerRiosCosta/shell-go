@@ -71,17 +71,19 @@ func main() {
 			break
 		}
 
-		parts := strings.Split(command, " ")
+		//parts := strings.Split(command, " ")
+		parts := strings.Fields(command)
 
 		switch parts[0] {
 		case "echo":
-			re := regexp.MustCompile(`'([^']*)'`)
-			match := re.FindStringSubmatch(command[len(parts[0]):])
+			re_quotes := regexp.MustCompile(`'([^']*)'`)
+			match := re_quotes.FindStringSubmatch(command[len(parts[0]):])
 			if len(match) > 1 {
 				fmt.Println(match[1])
 			} else {
 				for i := 1; i < len(parts); i++ {
 					builder.WriteString(parts[i] + " ")
+					//fmt.Println(builder.String())
 				}
 				fmt.Println(strings.TrimSpace(builder.String()))
 			}
