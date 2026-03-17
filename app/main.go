@@ -22,7 +22,7 @@ func is_executable(argument string) (string, bool) {
 }
 
 func check_type(type_argument string) string {
-	if type_argument == "echo" || type_argument == "type" || type_argument == "exit" || type_argument == "pwd" {
+	if type_argument == "echo" || type_argument == "type" || type_argument == "exit" || type_argument == "pwd" || type_argument == "cd" {
 		return fmt.Sprintf("%s is a shell builtin\n", type_argument)
 	} else {
 		full_path, is_executable := is_executable(type_argument)
@@ -32,6 +32,16 @@ func check_type(type_argument string) string {
 			return fmt.Sprintf("%s is %s\n", type_argument, full_path)
 		}
 	}
+}
+
+func directory_exists(path string) bool {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
 }
 
 func main() {
@@ -69,6 +79,18 @@ func main() {
 				log.Fatal(err)
 			}
 			fmt.Println(dir)
+		case "cd":
+			if len(parts) == 2 {
+				if directory_exists(parts[1]) {
+					err := os.Chdir(parts[1])
+					if err != nil {
+						log.Fatal(err)
+					}
+				} else {
+					fmt.Printf("cd: %s: Not such file or directory\n", parts[1])
+				}
+			}
+
 		default:
 			_, is_exec := is_executable(parts[0])
 			if is_exec {
