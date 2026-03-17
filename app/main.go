@@ -22,7 +22,7 @@ func is_executable(argument string) (string, bool) {
 }
 
 func check_type(type_argument string) string {
-	if type_argument == "echo" || type_argument == "type" || type_argument == "exit" {
+	if type_argument == "echo" || type_argument == "type" || type_argument == "exit" || type_argument == "pwd" {
 		return fmt.Sprintf("%s is a shell builtin\n", type_argument)
 	} else {
 		full_path, is_executable := is_executable(type_argument)
