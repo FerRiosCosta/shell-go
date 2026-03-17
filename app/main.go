@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"slices"
 	"strings"
 )
@@ -74,10 +75,16 @@ func main() {
 
 		switch parts[0] {
 		case "echo":
-			for i := 1; i < len(parts); i++ {
-				builder.WriteString(parts[i] + " ")
+			re := regexp.MustCompile(`'([^']*)'`)
+			match := re.FindStringSubmatch(command[len(parts[0]):])
+			if len(match) > 1 {
+				fmt.Println(match[1])
+			} else {
+				for i := 1; i < len(parts); i++ {
+					builder.WriteString(parts[i] + " ")
+				}
+				fmt.Println(strings.TrimSpace(builder.String()))
 			}
-			fmt.Println(strings.TrimSpace(builder.String()))
 		case "type":
 			if len(parts) == 2 {
 				fmt.Print(check_type(parts[1]))
