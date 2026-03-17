@@ -6,11 +6,20 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"slices"
 	"strings"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 var _ = fmt.Print
+
+var buildins = []string{
+	"echo",
+	"exit",
+	"type",
+	"pwd",
+	"cd",
+}
 
 func is_executable(argument string) (string, bool) {
 	full_path, err := exec.LookPath(argument)
@@ -22,7 +31,7 @@ func is_executable(argument string) (string, bool) {
 }
 
 func check_type(type_argument string) string {
-	if type_argument == "echo" || type_argument == "type" || type_argument == "exit" || type_argument == "pwd" || type_argument == "cd" {
+	if slices.Contains(buildins, type_argument) {
 		return fmt.Sprintf("%s is a shell builtin\n", type_argument)
 	} else {
 		full_path, is_executable := is_executable(type_argument)
