@@ -62,6 +62,12 @@ func main() {
 			if len(parts) == 2 {
 				fmt.Print(check_type(parts[1]))
 			}
+		case "pwd":
+			dir, err : os.Getwd()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(dir)
 		default:
 			_, is_exec := is_executable(parts[0])
 			if is_exec {
