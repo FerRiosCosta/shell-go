@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"regexp"
 	"slices"
 	"strings"
 )
@@ -54,11 +53,39 @@ func directory_exists(path string) bool {
 	return true
 }
 
+func echoParser(input string) []string {
+	var args []string
+	var current strings.Builder
+	inQuote := false
+
+	for i := 0; i < len(input); i++ {
+		ch := input[i]
+
+		switch {
+		case ch == '\'' && !inQuote:
+			inQuote = true
+		case ch == '\'' && inQuote:
+			inQuote = false
+		case ch == ' ' && !inQuote:
+			if current.Len() > 0 {
+				args = append(args, current.String())
+				current.Reset()
+			}
+		default:
+			current.WriteByte(ch) // write character as-is
+		}
+	}
+	if current.Len() > 0 {
+		args = append(args, current.String())
+	}
+	return args
+}
+
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("$ ")
-		var builder strings.Builder
+		//var builder strings.Builder
 
 		command, err := reader.ReadString('\n')
 		if err != nil {
@@ -73,20 +100,23 @@ func main() {
 
 		//parts := strings.Split(command, " ")
 		parts := strings.Fields(command)
-
+		args := echoParser(command)
 		switch parts[0] {
 		case "echo":
-			re_quotes := regexp.MustCompile(`'([^']*)'`)
-			match := re_quotes.FindStringSubmatch(command[len(parts[0]):])
-			if len(match) > 1 {
-				fmt.Println(match[1])
+
+			fmt.Println(strings.Join(args[1:], " "))
+			/*if len(matches) > 1 {
+				for _, m := range matches {
+					fmt.Println(m)
+					fmt.Printf("%s ", m[1])
+				}
 			} else {
 				for i := 1; i < len(parts); i++ {
 					builder.WriteString(parts[i] + " ")
 					//fmt.Println(builder.String())
 				}
 				fmt.Println(strings.TrimSpace(builder.String()))
-			}
+			}*/
 		case "type":
 			if len(parts) == 2 {
 				fmt.Print(check_type(parts[1]))
