@@ -78,6 +78,7 @@ func echoParser(input string) []string {
 	if current.Len() > 0 {
 		args = append(args, current.String())
 	}
+
 	return args
 }
 
@@ -85,7 +86,6 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("$ ")
-		//var builder strings.Builder
 
 		command, err := reader.ReadString('\n')
 		if err != nil {
@@ -101,25 +101,14 @@ func main() {
 		//parts := strings.Split(command, " ")
 		parts := strings.Fields(command)
 		args := echoParser(command)
-		switch parts[0] {
+		switch args[0] {
 		case "echo":
 
 			fmt.Println(strings.Join(args[1:], " "))
-			/*if len(matches) > 1 {
-				for _, m := range matches {
-					fmt.Println(m)
-					fmt.Printf("%s ", m[1])
-				}
-			} else {
-				for i := 1; i < len(parts); i++ {
-					builder.WriteString(parts[i] + " ")
-					//fmt.Println(builder.String())
-				}
-				fmt.Println(strings.TrimSpace(builder.String()))
-			}*/
+
 		case "type":
-			if len(parts) == 2 {
-				fmt.Print(check_type(parts[1]))
+			if len(args) == 2 {
+				fmt.Print(check_type(args[1]))
 			}
 		case "pwd":
 			dir, err := os.Getwd()
@@ -128,20 +117,20 @@ func main() {
 			}
 			fmt.Println(dir)
 		case "cd":
-			if len(parts) == 2 {
-				if directory_exists(parts[1]) {
-					err := os.Chdir(parts[1])
+			if len(args) == 2 {
+				if directory_exists(args[1]) {
+					err := os.Chdir(args[1])
 					if err != nil {
 						log.Fatal(err)
 					}
-				} else if parts[1] == "~" {
+				} else if args[1] == "~" {
 					home := os.Getenv("HOME")
 					err := os.Chdir(home)
 					if err != nil {
 						log.Fatal(err)
 					}
 				} else {
-					fmt.Printf("cd: %s: No such file or directory\n", parts[1])
+					fmt.Printf("cd: %s: No such file or directory\n", args[1])
 				}
 			}
 
