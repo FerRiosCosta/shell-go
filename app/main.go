@@ -99,13 +99,11 @@ func main() {
 		}
 
 		//parts := strings.Split(command, " ")
-		parts := strings.Fields(command)
+		//parts := strings.Fields(command)
 		args := echoParser(command)
 		switch args[0] {
 		case "echo":
-
 			fmt.Println(strings.Join(args[1:], " "))
-
 		case "type":
 			if len(args) == 2 {
 				fmt.Print(check_type(args[1]))
@@ -139,9 +137,9 @@ func main() {
 			cmd.Stderr = os.Stderr
 			cmd.Run()
 		default:
-			_, is_exec := is_executable(parts[0])
+			_, is_exec := is_executable(args[0])
 			if is_exec {
-				cmd := exec.Command(parts[0], parts[1:]...)
+				cmd := exec.Command(args[0], args[1:]...)
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 				cmd.Run()
