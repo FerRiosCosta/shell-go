@@ -133,7 +133,11 @@ func main() {
 					fmt.Printf("cd: %s: No such file or directory\n", args[1])
 				}
 			}
-
+		case "cat":
+			cmd := exec.Command("cat", args[1:]...)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Run()
 		default:
 			_, is_exec := is_executable(parts[0])
 			if is_exec {
