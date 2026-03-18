@@ -57,16 +57,20 @@ func echoParser(input string) []string {
 	var args []string
 	var current strings.Builder
 	inQuote := false
-
+	inDoubleQuote := false
 	for i := 0; i < len(input); i++ {
 		ch := input[i]
 
 		switch {
-		case ch == '\'' && !inQuote:
+		case ch == '"' && !inDoubleQuote:
+			inDoubleQuote = true
+		case ch == '"' && inDoubleQuote:
+			inDoubleQuote = false
+		case ch == '\'' && !inQuote && !inDoubleQuote:
 			inQuote = true
 		case ch == '\'' && inQuote:
 			inQuote = false
-		case ch == ' ' && !inQuote:
+		case ch == ' ' && !inQuote && !inDoubleQuote:
 			if current.Len() > 0 {
 				args = append(args, current.String())
 				current.Reset()
